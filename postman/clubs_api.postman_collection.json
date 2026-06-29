@@ -1,0 +1,744 @@
+{
+  "info": {
+    "_postman_id": "d2bfb716-4287-4a16-a455-7dfd916a3430",
+    "name": "Clubs API",
+    "description": "Complete Postman collection for the Clubs API (v1). Includes public and protected endpoints with shared bearer token handling.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "device_id",
+      "value": "RKQ1.211119.001"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"EMAIL\",\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Test@123\",\n  \"mobile\": \"60123456789\",\n  \"device_id\": \"{{device_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login (stores token)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sunilmca09@gmail.com\",\n  \"password\": \"Test@1\",\n  \"device_id\": \"{{device_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "login"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let token = null;",
+                  "try {",
+                  "    const json = pm.response.json();",
+                  "    token = json?.data?.token || null;",
+                  "    if (token) {",
+                  "        pm.collectionVariables.set('access_token', token);",
+                  "    }",
+                  "} catch (e) {",
+                  "    console.warn('Unable to parse login response', e);",
+                  "}",
+                  "if (!token) {",
+                  "    pm.collectionVariables.unset('access_token');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/forgotpassword",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "forgotpassword"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Account Deletion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/accountdeletion",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "accountdeletion"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public",
+      "item": [
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/dashboard",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "dashboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "CMS Page",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page_name\": \"ABOUT_US\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/cmspage",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "cmspage"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Contact Submit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"message\": \"Need more info\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/contact",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "contact"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Clubs List",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"club_id\": null\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/clubs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "clubs"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Club Membership Plans",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/clubsmember",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "clubsmember"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Join Club Submit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": 1,\n  \"clubs_id\": 1,\n  \"primary_membername\": \"Member Name\",\n  \"companyname\": \"Company\",\n  \"mobile\": \"60123456789\",\n  \"member_icpassport\": \"A1234567\",\n  \"email\": \"member@example.com\",\n  \"residence_address\": \"123 Street\",\n  \"amount\": \"1000\",\n  \"bankname\": \"ABC Bank\",\n  \"payment_date\": \"2024-01-01\",\n  \"reference_number\": \"PAY123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/clubsubmit",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "clubsubmit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Event Participant Submit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": 1,\n  \"user_id\": 1,\n  \"full_name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"mobile\": \"60123456789\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/participantsubmit",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "participantsubmit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Event QR Scan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"qr_code\": \"SAMPLE-CODE\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/qrscan",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "qrscan"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Event Attendance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": 1,\n  \"participant_id\": 1,\n  \"status\": \"PRESENT\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/attendance",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "attendance"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Membership Types",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/membershiptype",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "membershiptype"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Event Upload",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": 1,\n  \"file_url\": \"https://example.com/ticket.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/upload",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "upload"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Banner List",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/banner",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "banner"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sponsors",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/sponsor",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "sponsor"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sponsor By ID",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sponsor_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/sponsorid",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "sponsorid"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sponsor by Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/sponsorevent",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "sponsorevent"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Protected (JWT)",
+      "item": [
+        {
+          "name": "User Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/show",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "show"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Name\",\n  \"mobile\": \"60123456789\",\n  \"email\": \"updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/update",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "update"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload Profile Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attachment\": \"https://example.com/avatar.png\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/uploadProfileImage",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "uploadProfileImage"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Member List",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"search\": null\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/memberList",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "memberList"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldpassword\": \"Test@1\",\n  \"newpassword\": \"NewPass@1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/user/changepassword",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "changepassword"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
